@@ -1,0 +1,6 @@
+import { createContext } from "react";
+
+// Create a context for the counter
+const ShowInfoContext = createContext<boolean>(false);
+
+export default ShowInfoContext;

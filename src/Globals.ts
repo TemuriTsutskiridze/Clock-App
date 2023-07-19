@@ -21,6 +21,7 @@ const GlobalStyle = createGlobalStyle`
         background-repeat: no-repeat;
         background-size: 100% 100%;
         position: relative;
+        padding: 0 2.5rem;
     }
 `;
 

@@ -1,17 +1,21 @@
 import styled, { css } from "styled-components";
-import { useEffect, useState } from "react";
-import { Tquote } from "../types/types";
+import { useContext, useEffect, useState } from "react";
+import { TQuote } from "../types/types";
 
 import RefreshIcon from "../assets/desktop/icon-refresh.svg";
+
+import ShowInfoContext from "../contexts/ShowInfoContext";
 
 export default function Quotes() {
   const [quote, setQuote] = useState<string>("");
   const [name, setName] = useState<string>("");
 
+  const showInfo = useContext(ShowInfoContext);
+
   async function fetchData() {
     try {
       const response = await fetch("https://api.quotable.io/random");
-      const data: Tquote = (await response.json()) as Tquote;
+      const data: TQuote = (await response.json()) as TQuote;
       setQuote(data.content);
       setName(data.author);
     } catch (error) {
@@ -23,18 +27,19 @@ export default function Quotes() {
     void fetchData();
   }, []);
 
-  return (
+  return !showInfo ? (
     <QuoteContainer>
       <Quote>{quote}</Quote>
       <Author>{name}</Author>
       <Refresh src={RefreshIcon} onClick={() => void fetchData()}></Refresh>
     </QuoteContainer>
-  );
+  ) : null;
 }
 
 const QuoteContainer = styled.div`
   width: 100%;
-  padding: 3.2rem 2.5rem 0;
+  min-height: 5rem;
+  padding: 3.2rem 0 0 0;
   display: flex;
   gap: 1.7rem;
   position: relative;
@@ -52,7 +57,7 @@ const Quote = styled.p`
 const Author = styled.p`
   position: absolute;
   bottom: -3rem;
-  left: 2.5rem;
+  left: 0;
 `;
 
 const Refresh = styled.img`
