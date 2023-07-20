@@ -20,9 +20,9 @@ export default function Clock({ children }: ShowInfoProps) {
   async function fetchData() {
     try {
       const response = await fetch("https://worldtimeapi.org/api/ip");
-      console.log(response);
-      const data: TClock = (await response.json()) as TClock;
 
+      const data: TClock = (await response.json()) as TClock;
+      console.log(data);
       setTime(data);
     } catch (error) {
       console.log(error);
@@ -46,7 +46,7 @@ export default function Clock({ children }: ShowInfoProps) {
   return (
     <ShowInfoContext.Provider value={showInfo}>
       {children}
-      <ClockContainer showInfo={showInfo}>
+      <ClockContainer showinfo={showInfo.toString()}>
         <DayContainer>
           <img src={SunIcon} alt="sun icon" />
           <Greeting>GOOD MORNING</Greeting>
@@ -67,12 +67,31 @@ export default function Clock({ children }: ShowInfoProps) {
           </ArrowWrapper>
         </Button>
       </ClockContainer>
+
+      <AdditionalInfo showinfo={showInfo.toString()}>
+        <InfoSection>
+          <p>CURRENT TIMEZONE</p>
+          <h3>{time?.timezone}</h3>
+        </InfoSection>
+        <InfoSection>
+          <p>Day of the year</p>
+          <h3>{time?.day_of_year}</h3>
+        </InfoSection>
+        <InfoSection>
+          <p>Day of the week</p>
+          <h3>{time?.day_of_week}</h3>
+        </InfoSection>
+        <InfoSection>
+          <p>Week number</p>
+          <h3>{time?.week_number}</h3>
+        </InfoSection>
+      </AdditionalInfo>
     </ShowInfoContext.Provider>
   );
 }
 
 interface TClockContainer {
-  showInfo: boolean;
+  showinfo: string;
 }
 
 const ClockContainer = styled.div<TClockContainer>`
@@ -81,7 +100,8 @@ const ClockContainer = styled.div<TClockContainer>`
     flex-direction: column;
     gap: 1.6rem;
     color: white;
-    padding-top: ${props.showInfo ? "10rem" : "25.7rem"};
+    padding-top: ${props.showinfo === "true" ? "10rem" : "25.7rem"};
+    padding-bottom: 4rem;
     transition: 0.5s;
   `}
 `;
@@ -147,4 +167,40 @@ const ArrowWrapper = styled.div`
   background: rgba(48, 48, 48, 1);
   border-radius: 50%;
   cursor: pointer;
+`;
+
+const AdditionalInfo = styled.div<TClockContainer>`
+  ${(props) => css`
+    width: 100%;
+    padding: 4.8rem 2.6rem 5rem;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20.387113571166992px);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: absolute;
+    left: 0;
+    transform: translateY(${props.showinfo === "true" ? "31%" : "100%"});
+    transition: 0.5s;
+  `}
+`;
+
+const InfoSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & p {
+    font-size: 1rem;
+    line-height: 2.8em;
+    font-weight: 400;
+    color: #303030;
+    text-transform: uppercase;
+  }
+
+  & h3 {
+    font-size: 2rem;
+    line-height: normal;
+    font-weight: 700;
+  }
 `;
