@@ -41,6 +41,13 @@ export default function Clock({ children }: ShowInfoProps) {
 
   useEffect(() => {
     void fetchData();
+    const interval = setInterval(() => {
+      void fetchData();
+    }, 60 * 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   const hour: number = new Date(time?.datetime as string).getHours();
