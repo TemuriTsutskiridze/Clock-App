@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
 import { TQuote } from "../types/types";
 
@@ -27,9 +27,9 @@ export default function Quotes() {
     void fetchData();
   }, []);
 
-  return !showInfo ? (
+  return !showInfo.showInfo ? (
     <QuoteContainer>
-      <Quote>{quote}</Quote>
+      <Quote>"{quote}"</Quote>
       <Author>{name}</Author>
       <Refresh src={RefreshIcon} onClick={() => void fetchData()}></Refresh>
     </QuoteContainer>
@@ -47,6 +47,10 @@ const QuoteContainer = styled.div`
   font-size: 1.2rem;
   line-height: 1.8em;
   font-weight: 700;
+
+  @media only screen and (min-width: 48em) {
+    font-size: 1.8rem;
+  }
 `;
 
 const Quote = styled.p`
@@ -64,4 +68,8 @@ const Refresh = styled.img`
   width: 1.7rem;
   height: 1.7rem;
   cursor: pointer;
+
+  @media only screen and (min-width: 48em) {
+    margin-top: 1rem;
+  }
 `;
