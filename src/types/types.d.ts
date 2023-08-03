@@ -9,6 +9,13 @@ export type TQuote = {
   _id: string;
 };
 
+export type TBackupQuote = {
+  slip: {
+    id: number;
+    advice: string;
+  };
+};
+
 export type TClock = {
   abbreviation: string;
   client_ip: string;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
-import { TQuote } from "../types/types";
+import { TBackupQuote } from "../types/types";
 
 import RefreshIcon from "../assets/desktop/icon-refresh.svg";
 
@@ -8,16 +8,16 @@ import ShowInfoContext from "../contexts/ShowInfoContext";
 
 export default function Quotes() {
   const [quote, setQuote] = useState<string>("");
-  const [name, setName] = useState<string>("");
+  // const [name, setName] = useState<string>("");
 
   const showInfo = useContext(ShowInfoContext);
 
   async function fetchData() {
     try {
-      const response = await fetch("https://api.quotable.io/random");
-      const data: TQuote = (await response.json()) as TQuote;
-      setQuote(data.content);
-      setName(data.author);
+      const response = await fetch("https://api.adviceslip.com/advice");
+      const data: TBackupQuote = (await response.json()) as TBackupQuote;
+      setQuote(data.slip.advice);
+      // setName(data.author);
     } catch (error) {
       console.log(error);
     }
@@ -30,7 +30,7 @@ export default function Quotes() {
   return !showInfo.showInfo ? (
     <QuoteContainer>
       <Quote>"{quote}"</Quote>
-      <Author>{name}</Author>
+      {/* <Author>{name}</Author> */}
       <Refresh src={RefreshIcon} onClick={() => void fetchData()}></Refresh>
     </QuoteContainer>
   ) : null;
@@ -58,11 +58,11 @@ const Quote = styled.p`
   font-weight: 400;
 `;
 
-const Author = styled.p`
-  position: absolute;
-  bottom: -3rem;
-  left: 0;
-`;
+// const Author = styled.p`
+//   position: absolute;
+//   bottom: -3rem;
+//   left: 0;
+// `;
 
 const Refresh = styled.img`
   width: 1.7rem;
